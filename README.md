@@ -8,23 +8,31 @@ I made these two script to make the life easier to who has a bricked NP(1) or if
 
 **I am not responsible for any damage you made to your device. You have been warned.**
 
-The `flash_all.sh` is not verified to work at the moment. Needs more testing.
+The `flash_all` script ~~is not verified to work at the moment~~ *should work*. Needs more testing.
 
 ## OS support:
 
 - macOS (x86 and arm64 support)
 - GNU/Linux (x86 and arm64 support)
-- Windows support is [arriving soon](https://github.com/sh4tteredd/nothing-phone-1-tools/tree/windows-alpha)
+- Windows
 
 ## Prerequisites:
 
 - [android-platform-tools](https://developer.android.com/studio/releases/platform-tools) installed for your OS
 
-- A Nothing phone(1) with unlocked bootloader
+- A Nothing phone(1) with unlocked bootloader running nothingOS <= 1.1.2
 
-- `wget`, `unzip` and `tar` installed
+- `wget`, `unzip` and `tar` installed (macOS/Linux only)
 
-## Usage:
+## Usage (Windows):
+
+- download this repository
+
+- run the `download.ps1` script with powershell (Right click on the file > click "Run with Powershell")
+
+- Now you can proceed with the flash running the `flash_all.bat` file (this will obviously delete all your personal data)
+
+## Usage (macOS/Linux):
 
 - clone this repo using
 
@@ -44,7 +52,7 @@ cd nothing-phone-1-tools/
 chmod +x *
 ```
 
-- and first of all download all the the entire firmware that you need using
+- and first of all download all the entire firmware that you need using
 
 ```
 ./download.sh
@@ -64,7 +72,7 @@ Your Nothing Phone(1) will reboot and it (shoud) be alive!
 
 ## TODO:
 
-Fix fastbootd flash (see [this](https://forum.xda-developers.com/t/nothing-phone-1-flashing-utilities.4478457/post-87267397))
+~~Fix fastbootd flash (see [this](https://forum.xda-developers.com/t/nothing-phone-1-flashing-utilities.4478457/post-87267397))~~ probably fixed, need to verify it.
 
 ## Credits:
 

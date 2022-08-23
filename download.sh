@@ -1,54 +1,26 @@
 #!/bin/bash
-check_tar() {
-  if ! command -v tar > /dev/null; then
-      echo "tar is not installed!"
-      echo "In order to use this script please install tar from your package manager"
+check() {
+      if ! command -v $1 > /dev/null; then
+      echo "$1 is not installed!"
+      echo "In order to use this script please install $1 from your package manager"
       exit
   fi
 }
-check_unzip() {
-  if ! command -v unzip > /dev/null; then
-      echo "unzip is not installed!"
-      echo "In order to use this script please install unzip from your package manager"
-      exit
-  fi
-}
-check_wget() {
-  if ! command -v wget > /dev/null; then
-      echo "wget is not installed!"
-      echo "In order to use this script please install wget from your package manager"
-      exit
-  fi
-}
-check_adb() {
-  if ! command -v fastboot > /dev/null; then
-      echo "Android Platform Tools are not installed!"
-      echo "In order to use this script please install the android platform tools from your package manager"
-      exit
-  fi
-}
+
 clean() {
     echo "Cleaning..."
     rm -rf extracted*
-    rm -rf META-INF
-    rm payload_properties.txt
     rm payload-dumper-go.tar.gz
     rm payload-dumper-go
     rm fw.zip
     rm payload.bin
-    rm apex_info.pb
-    rm care_map.pb
 }
-echo "Nothing firmware downloader by @sh4ttered V1.1.2"
-check_wget;
-check_adb;
-check_tar;
-check_unzip;
-
+echo "Nothing firmware downloader by @sh4ttered V1.1.3"
+check wget
+check tar
+check unzip
 rm -rf images/ #clean from previous downloads
-#if [ -f "payload-dumper-go.tar.gz" ]; then
-#    rm payload-dumper-go.tar.gz #clean from previous downloads // stupid check(?)
-#fi
+
 if [[ $(uname -m) == 'arm64' ]]; then #check if arch is arm64
   arm="1"
 fi
@@ -63,14 +35,14 @@ fi
 
 read -p "Do you need the [G]lobal firmware or the [E]uropean firmware (G/E)? " ge 
 case $ge in 
-	G | g)  echo "Downloading the global firmware v1.1.2";
+	G | g)  echo "Downloading the global firmware v1.1.3";
             echo "This may take a while depending on your internet speed";
             echo " ";
-            wget -q --show-progress -O fw.zip https://android.googleapis.com/packages/ota-api/package/a244285dfb5aef198999463c2d55f353ed0e7b1b.zip;;
-	E | e)  echo "Downloading the EU firmware v1.1.2";
+            wget -q --show-progress -O fw.zip https://android.googleapis.com/packages/ota-api/package/ee4a8d890091f980aa40142d68f46abb1f08e0c5.zip;;
+	E | e)  echo "Downloading the EU firmware v1.1.3";
             echo "This may take a while depending on your internet speed";
             echo " ";
-            wget -q --show-progress -O fw.zip https://android.googleapis.com/packages/ota-api/package/0f77244380edcc46a4d60397f5c22ea911352bfe.zip;;
+            wget -q --show-progress -O fw.zip https://android.googleapis.com/packages/ota-api/package/a6f363b6709ec67910b4018526d9525ccb4075f9.zip;;
     * )     echo "Invalid input!";
 		    exit 1;;
 esac
@@ -90,9 +62,15 @@ elif [[ $mac -eq "1" ]]; then #macOS
 fi
 
 tar -zxf payload-dumper-go.tar.gz payload-dumper-go
-unzip -q fw.zip
+unzip -j fw.zip '*payload.bin*'
 ./payload-dumper-go payload.bin
 echo " "
 mkdir images
 mv extracted*/* images/
 clean;
+read -p "Do you want to flash your phone now? (y/N)? " yn 
+if [[ $yn -eq y ]]; then 
+    ./flash_all.sh
+else
+    exit 1
+fi
